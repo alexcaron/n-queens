@@ -130,8 +130,27 @@
     // --------------------------------------------------------------
     //
     // test if a specific column on this board contains a conflict
+    // input - a column index number
+    // output - a boolean, true if there is more than one piece in that column
+    // edge cases - if the column number is invalid (too large, not a number), return undefined
+    // approach - set a variable for the count
+    // get all of the row arrays. loop through each array, and check the appropriate index that represents the column's squares.
+    // add to the count each time. if the count is ever greater than 1, return true.
+    // at the end, return false
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      var rows = this.rows();
+      // check that the column index is valid: less than length of first row & a number
+      if (colIndex < rows[0].length || typeof colIndex !== 'number') {
+        return undefined;
+      }
+      var count = 0;
+      for (var row of rows) {
+        count += row[colIndex];
+        if (count > 1) {
+          return true;
+        }
+      }
+      return false;
     },
 
     // test if any columns on this board contain conflicts
