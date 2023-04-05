@@ -140,7 +140,7 @@
     hasColConflictAt: function(colIndex) {
       var rows = this.rows();
       // check that the column index is valid: less than length of first row & a number
-      if (colIndex < rows[0].length || typeof colIndex !== 'number') {
+      if (colIndex >= this.get('n') || typeof colIndex !== 'number') {
         return undefined;
       }
       var count = 0;
@@ -154,8 +154,17 @@
     },
 
     // test if any columns on this board contain conflicts
+    // input - none
+    // output - boolean of whether the board has any vertical conflicts (any columns with multiple pieces)
+    // approach - loop from 0 to n - 1. run the column check function. if it returns true for any column, return true. otherwise, return false
     hasAnyColConflicts: function() {
-      return false; // fixme
+      var numberOfColumns = this.get('n');
+      for (var columnIndex = 0; columnIndex < numberOfColumns; columnIndex++) {
+        if (this.hasColConflictAt(columnIndex)) {
+          return true;
+        }
+      }
+      return false;
     },
 
 
