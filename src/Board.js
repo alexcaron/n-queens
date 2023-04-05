@@ -2,6 +2,22 @@
 // It's part of the Board Visualizer
 // The only portions you need to work on are the helper functions (below)
 
+/* Methods
+
+- rows = returns an array of rows representing the board
+- togglePiece(row, col) = switches the piece on/off at a specific position on the board
+- hasAnyRooksConflicts = returns whether there are any rook-style conflicts on the board
+- hasAnyQueensConflicts = returns whether there are any queen-style conflicts (i.e., rook-style + major + minor diagonals) on the board
+- hasRowConflictAt(rowIndex) = returns whether a row has two pieces
+- hasColConflictAt(colIndex) = returns whether a column has two pieces
+- hasAnyRowConflicts = returns whether the board has any horizontal conflicts
+- hasAnyColConflicts = returns whether the board has any vertical conflicts
+- hasMajorDiagonalConflictAt(colIndexOfFirstRow) = returns whether there is a left-to-right diagonal conflict starting at that column
+- hasAnyMajorDiagonalConflicts = returns whether there are any left-to-right diagonal conflicts on the board
+- hasMinorDiagonalConflictAt(colIndexOfFirstRow) = returns whether there is a right-to-left diagonal conflict starting at that column
+- hasAnyMinorDiagonalConflicts = returns whether there are any right-to-left diagonal conflicts on the board
+
+*/
 (function() {
 
   window.Board = Backbone.Model.extend({
@@ -78,8 +94,21 @@
     // --------------------------------------------------------------
     //
     // test if a specific row on this board contains a conflict
+    // input - row index number
+    // output - a boolean of whether there is a conflict in this specific row
+    // edge cases - if the row index is invalid (e.g., that row doesn't exist), return undefined
+    // approach: sum up the squares (each square is either 1 or 0); return true if greater than 1
+
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      var row = this.rows()[rowIndex];
+      // check that there is a row at the given index
+      if (!row) {
+        return undefined;
+      }
+      var totalPiecesInRow = row.reduce(function(count, square) {
+        return count + square;
+      }, 0);
+      return totalPiecesInRow > 1; // fixme
     },
 
     // test if any rows on this board contain conflicts
