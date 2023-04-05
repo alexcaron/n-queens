@@ -112,11 +112,19 @@
     },
 
     // test if any rows on this board contain conflicts
+    // input - none
+    // output - boolean for whether this board has a conflict in any row (one conflict means return true)
+    // approach - iterate through the number of rows (0 -> n), checking whether there is a conflict at that row number.
+    // as soon as a conflict is found, return true. otherwise, at the end, return false.
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      var numberOfRows = this.get('n');
+      for (var rowNumber = 0; rowNumber < numberOfRows; rowNumber++) {
+        if (this.hasRowConflictAt(rowNumber)) {
+          return true;
+        }
+      }
+      return false;
     },
-
-
 
     // COLUMNS - run from top to bottom
     // --------------------------------------------------------------
