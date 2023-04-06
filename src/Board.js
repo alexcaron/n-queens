@@ -98,7 +98,6 @@
     // output - a boolean of whether there is a conflict in this specific row
     // edge cases - if the row index is invalid (e.g., that row doesn't exist), return undefined
     // approach: sum up the squares (each square is either 1 or 0); return true if greater than 1
-
     hasRowConflictAt: function(rowIndex) {
       var row = this.rows()[rowIndex];
       // check that there is a row at the given index
@@ -139,7 +138,7 @@
     // at the end, return false
     hasColConflictAt: function(colIndex) {
       var rows = this.rows();
-      // check that the column index is valid: less than length of first row & a number
+      // check that the column index is valid: less than size of board & a number
       if (colIndex >= this.get('n') || typeof colIndex !== 'number') {
         return undefined;
       }
@@ -173,8 +172,35 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
+    // input - column index that would cross the first row: ranges from -(n - 2) -> (n - 2)
+    // example: n = 4 will need to check the indices marked with stars below
+    //  -2  -1  0   1   2   3
+    //         _______________
+    //   *  * |_*_|_*_|_*_|___|
+    //        |___|___|___|___|
+    //        |___|___|___|___|
+    //        |_x_|___|___|___|
+    //
+    // output - a boolean of whether there are two pieces in a specific diagonal
+    // edge cases - need to consider how to deal with shorter/longer diagonals
+    // if it is a "corner", return false
+    // if it is beyond the board's diagonals (-(n-1) to (n-1)), return undefined
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var size = this.get('n');
+      if (majorDiagonalColumnIndexAtFirstRow < -(size - 1) || majorDiagonalColumnIndexAtFirstRow > (size - 1)) {
+        return undefined;
+      }
+      var rows = this.rows();
+      var totalPiecesInDiagonal = 0;
+      var rowIndex = 0;
+      for (var colIndex = majorDiagonalColumnIndexAtFirstRow; colIndex < majorDiagonalColumnIndexAtFirstRow + size; colIndex++) {
+        // confirm that we are inbounds of our arrays
+        if (colIndex >= 0 && colIndex < size && rowIndex >= 0 && rowIndex < size) {
+          totalPiecesInDiagonal += rows[rowIndex][colIndex];
+        }
+        rowIndex += 1;
+      }
+      return totalPiecesInDiagonal > 1;
     },
 
     // test if any major diagonals on this board contain conflicts
