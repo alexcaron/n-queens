@@ -204,8 +204,19 @@
     },
 
     // test if any major diagonals on this board contain conflicts
+    // input - none
+    // output - boolean of whether there are any major diagonal conflicts
+    // approach: run the major diagonal checker function for column indices that go from -(n-1) to (n-1) [see notes at that function]
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      var size = this.get('n');
+      var columnIndexToCheck = -size + 1;
+      while (columnIndexToCheck < size) {
+        if (this.hasMajorDiagonalConflictAt(columnIndexToCheck)) {
+          return true;
+        }
+        columnIndexToCheck += 1;
+      }
+      return false;
     },
 
 
