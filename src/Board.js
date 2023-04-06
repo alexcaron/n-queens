@@ -270,7 +270,6 @@
       return false;
     },
 
-
     // create a new board that contains the current board that is size n + 1 at the given corner
     // input - a corner placement string (top-left, top-right, bottom-left, bottom-right)
     // output - a new board that includes the old board and then all empty squares. It is size n + 1 x n + 1
