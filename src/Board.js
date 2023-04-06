@@ -225,13 +225,49 @@
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
+    // input - column index that would cross the first row: ranges from 1 -> (2(n-1) - 1)
+    // example: n = 4 will need to check the indices marked with stars below
+    //     0   1   2   3   4   5
+    //    _______________
+    //   |___|_*_|_*_|_*_| *   *
+    //   |___|___|___|___|
+    //   |___|___|___|___|
+    //   |___|___|___|___|
+    //
+    // output - a boolean of whether there are two pieces in a specific diagonal
+    // edge cases - need to consider how to deal with shorter/longer diagonals
+    // if it is a "corner", return false
+    // if it is beyond the board's diagonals (-(n-1) to (n-1)), return undefined
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var size = this.get('n');
+      if (minorDiagonalColumnIndexAtFirstRow < 0 || minorDiagonalColumnIndexAtFirstRow > 2 * (size - 1)) {
+        return undefined;
+      }
+      var rows = this.rows();
+      var totalPiecesInDiagonal = 0;
+      var rowIndex = 0;
+      for (var colIndex = minorDiagonalColumnIndexAtFirstRow; colIndex > 0; colIndex--) {
+        // confirm that we are inbounds of our arrays
+        if (colIndex >= 0 && colIndex < size && rowIndex >= 0 && rowIndex < size) {
+          totalPiecesInDiagonal += rows[rowIndex][colIndex];
+        }
+        rowIndex += 1;
+      }
+      return totalPiecesInDiagonal > 1;
     },
 
     // test if any minor diagonals on this board contain conflicts
+    // input - none
+    // output - boolean of whether there are any minor diagonal conflicts
+    // approach: run the minor diagonal checker function for column indices that go from 1 to 2(n-1)-1 [see notes at that function]
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      var size = this.get('n');
+      for (var colIndex = 1; colIndex < 2 * (size - 1); colIndex++) {
+        if (this.hasMinorDiagonalConflictAt(colIndex)) {
+          return true;
+        }
+      }
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
