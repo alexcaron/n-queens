@@ -268,7 +268,37 @@
         }
       }
       return false;
+    },
+
+
+    // create a new board that contains the current board that is size n + 1 at the given corner
+    // input - a corner placement string (top-left, top-right, bottom-left, bottom-right)
+    // output - a new board that includes the old board and then all empty squares. It is size n + 1 x n + 1
+    generateLargerBoardAt: function(corner) {
+      var newSize = this.get('n') + 1;
+      var newBoardRows = [];
+      var [topOrBottom, leftOrRight] = corner.split('-');
+      var emptyRow = Array(newSize).fill(0);
+      if (leftOrRight === 'left') {
+        for (var row of this.rows()) {
+          newBoardRows.push(row.concat([0]));
+        }
+      }
+      if (leftOrRight === 'right') {
+        for (var row of this.rows()) {
+          newBoardRows.push([0].concat(row));
+        }
+      }
+      if (topOrBottom === 'top') {
+        newBoardRows.push(emptyRow);
+      }
+      if (topOrBottom === 'bottom') {
+        newBoardRows = [emptyRow].concat(newBoardRows);
+      }
+      return new Board(newBoardRows);
     }
+
+
 
     /*--------------------  End of Helper Functions  ---------------------*/
 
